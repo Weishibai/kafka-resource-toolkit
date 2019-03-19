@@ -2,6 +2,7 @@ package com.nicklaus.kafka.producer;
 
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
@@ -28,8 +29,11 @@ import com.google.common.collect.Maps;
 @PropertySource(value = {"classpath:kafka_producer_config.properties"}, ignoreResourceNotFound = true)
 public class KafkaProducerConfiguration {
 
+    @Autowired
+    private Environment env;
+
     @Bean
-    public Map<String, String> producerProperties(Environment env) {
+    public Map<String, String> producerProperties() {
         final Map<String, String> properties = Maps.newHashMap();
         properties.put("bootstrap.servers", env.getProperty("bootstrap.servers"));
         properties.put("group.id", env.getProperty("group.id"));
@@ -48,14 +52,14 @@ public class KafkaProducerConfiguration {
     }
 
     @Bean
-    public ProducerFactory producerFactory(Map<String, String> producerProperties) {
-        return new DefaultKafkaProducerFactory(producerProperties);
+    public ProducerFactory producerFactory() {
+        return new DefaultKafkaProducerFactory(producerProperties());
     }
 
     @Bean
-    public KafkaTemplate kafkaTemplate(ProducerFactory producerFactory) {
+    public KafkaTemplate kafkaTemplate() {
         //noinspection unchecked
-        return new KafkaTemplate<>(producerFactory, true);
+        return new KafkaTemplate<>(producerFactory(), true);
     }
 
     @Bean

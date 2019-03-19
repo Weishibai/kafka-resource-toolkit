@@ -2,6 +2,7 @@ package com.nicklaus.kafka.consumer;
 
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
@@ -26,8 +27,11 @@ import com.google.common.collect.Maps;
 @PropertySource(value = {"classpath:kafka_consumer_config.properties"}, ignoreResourceNotFound = true)
 public class KafkaConsumerConfiguration {
 
+    @Autowired
+    private Environment env;
+
     @Bean
-    public Map<String, String> consumerProperties(Environment env) {
+    public Map<String, String> consumerProperties() {
         final Map<String, String> properties = Maps.newHashMap();
         properties.put("bootstrap.servers", env.getProperty("bootstrap.servers"));
         properties.put("client.id", env.getProperty("client.id"));
@@ -44,8 +48,8 @@ public class KafkaConsumerConfiguration {
     }
 
     @Bean
-    public ConsumerFactory consumerFactory(Map<String, String> consumerProperties) {
-        return new DefaultKafkaConsumerFactory(consumerProperties);
+    public ConsumerFactory consumerFactory() {
+        return new DefaultKafkaConsumerFactory(consumerProperties());
     }
 
     @Bean
