@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
@@ -22,6 +23,7 @@ import com.google.common.collect.Maps;
  * @date 2019/03/18 6:28 PM
  */
 @Configuration
+@EnableKafka
 @Conditional(ProducerConditional.class)
 @PropertySource(value = {"classpath:kafka_producer_config.properties"}, ignoreResourceNotFound = true)
 public class KafkaProducerConfiguration {

@@ -1,6 +1,8 @@
 package com.nicklaus.kafka.producer;
 
 import org.apache.kafka.clients.producer.RecordMetadata;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.kafka.support.ProducerListener;
 
 /**
@@ -11,14 +13,16 @@ import org.springframework.kafka.support.ProducerListener;
  */
 public class KafkaProducerListener implements ProducerListener {
 
-    @Override
-    public void onSuccess(String s, Integer integer, Object o, Object o2, RecordMetadata recordMetadata) {
+    private static final Logger LOGGER = LoggerFactory.getLogger(KafkaProducerListener.class);
 
+    @Override
+    public void onSuccess(String topic, Integer partition, Object key, Object value, RecordMetadata recordMetadata) {
+        LOGGER.info("send topic {} partition {} success", topic, partition);
     }
 
     @Override
-    public void onError(String s, Integer integer, Object o, Object o2, Exception e) {
-
+    public void onError(String topic, Integer partition, Object key, Object value, Exception e) {
+        LOGGER.warn("send topic {} partition {} error: {}", topic, partition, e);
     }
 
     @Override

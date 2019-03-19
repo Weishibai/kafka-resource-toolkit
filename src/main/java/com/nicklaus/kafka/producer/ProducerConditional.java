@@ -14,6 +14,6 @@ public class ProducerConditional implements Condition {
 
     @Override
     public boolean matches(ConditionContext context, AnnotatedTypeMetadata annotatedTypeMetadata) {
-        return Boolean.parseBoolean(context.getEnvironment().getProperty("kafka.producer.on"));
+        return Boolean.valueOf(context.getEnvironment().getProperty("kafka.producer.on"));
     }
 }
